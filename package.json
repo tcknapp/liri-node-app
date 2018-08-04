@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/tcknapp/liri-node-app/issues"
   },
-  "homepage": "https://github.com/tcknapp/liri-node-app#readme"
+  "homepage": "https://github.com/tcknapp/liri-node-app#readme",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "request": "^2.87.0"
+  }
 }
