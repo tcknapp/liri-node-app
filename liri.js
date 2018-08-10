@@ -6,6 +6,11 @@ var request = require("request");
 var Twitter = require("twitter");
 var twitterKeys = require("./keys.js");
 
+var Spotify = require("node-spotify-api");
+var spotifyKeys = require("./keys.js");
+
+
+
 //Add the code required to import the keys.js file and store it in a variable.???
 
 // var spotify = new Spotify(keys.spotify);
@@ -20,11 +25,14 @@ var name = process.argv[3];
 * `do-what-it-says` */
 
 if(command == 'movie-this') {
-    console.log(command);
+    //console.log(command);
     moviethis(name);
 }
 else if(command == 'my-tweets') {
     mytweets();
+}
+else if(command == 'spotify-this-song') {
+    spotifythis();
 };
 
 function moviethis(movie_name) {
@@ -33,7 +41,9 @@ function moviethis(movie_name) {
     If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
     */
     // Include the request npm package (Don't forget to run "npm install request" in this folder first!)
-    
+      if(movie_name === undefined) {
+        movie_name = "mr nobody"
+      }
     
     // Then run a request to the OMDB API with the movie specified
     request("http://www.omdbapi.com/?t=" + movie_name + "&y=&plot=short&apikey=trilogy", function(error, response) {
@@ -71,8 +81,9 @@ function mytweets() {
   client.get('statuses/user_timeline', params, function(error, tweets, response){
     if(error){
       console.log("Error: " + error);
-    } else
-    console.log("Most Recent Tweets"); 
+    } 
+    else
+    console.log("Most Recent Tweets:"); 
     console.log("------------------------"); 
     
     for (var i = 0; i < tweets.length; i++) {
@@ -80,11 +91,11 @@ function mytweets() {
       console.log("Tweeted On: " + tweets[i].created_at); 
       console.log("-----------------------");
     }
-  });
+  }); //end of request fxn
 
-}
+} //end of twitter fxn
 
-function spotifythissong(song_name) {
+function spotifythis(song_name) {
 /*This will show the following information about the song in your terminal/bash window
 Artist(s)
 The song's name
@@ -92,7 +103,32 @@ A preview link of the song from Spotify
 The album that the song is from
 If no song is provided then your program will default to "The Sign" by Ace of Base.
 */
-}
+
+  song_name = name;
+
+
+  var spotify = new Spotify(spotifyKeys.spotify);
+
+
+    if(song_name === undefined) {
+         song_name = "the sign ace of base";
+     }
+
+    spotify.search({type: 'track', query: song_name}, function(error, data) {
+      if(error) {
+        console.log("Error: " + error);
+      } 
+      else {
+        console.log("Spotify Track:");
+          console.log("Artist(s): " + data.tracks.items[0].artists[0].name);
+          console.log("Song: " + data.tracks.items[0].name);
+          console.log("Preview: " + data.tracks.items[0].external_urls.spotify);
+          console.log("Album: " + data.tracks.items[0].album.name); 
+      }
+    }
+  )
+
+};
 
 
 function dowhatitsays() {
