@@ -1,11 +1,14 @@
 //put all 'required' at top
 require("dotenv").config();
+
 var request = require("request");
+
+var Twitter = require("twitter");
+var twitterKeys = require("./keys.js");
 
 //Add the code required to import the keys.js file and store it in a variable.???
 
-//var spotify = new Spotify(keys.spotify);
-//var client = new Twitter(keys.twitter);
+// var spotify = new Spotify(keys.spotify);
 
 var command = process.argv[2];
 var name = process.argv[3];
@@ -20,20 +23,12 @@ if(command == 'movie-this') {
     console.log(command);
     moviethis(name);
 }
+else if(command == 'my-tweets') {
+    mytweets();
+};
 
 function moviethis(movie_name) {
     /*OMDB API requires an API key. You may use trilogy
-    
-    This will output the following information to your terminal/bash window:
-    
-       * Title of the movie.
-       * Year the movie came out.
-       * IMDB Rating of the movie.
-       * Rotten Tomatoes Rating of the movie.
-       * Country where the movie was produced.
-       * Language of the movie.
-       * Plot of the movie.
-       * Actors in the movie.
     
     If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
     */
@@ -50,7 +45,14 @@ function moviethis(movie_name) {
         // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
        
        //add 'response' to .body
-        console.log("The movie's rating is: " + JSON.parse(response.body).imdbRating);
+        console.log("Title: " + JSON.parse(response.body).Title);
+        console.log("Year: " + JSON.parse(response.body).Year);
+        console.log("IMDB Rating: " + JSON.parse(response.body).imdbRating);
+        console.log("Rotten Tomatoes Rating: " + JSON.parse(response.body).Ratings[2].Value);
+        console.log("Country Produced: " + JSON.parse(response.body).Country);
+        console.log("Language: " + JSON.parse(response.body).Language);
+        console.log("Plot: " + JSON.parse(response.body).Plot);
+        console.log("Actors: " + JSON.parse(response.body).Actors);
       }
     }); //end of request function
     
@@ -59,6 +61,27 @@ function moviethis(movie_name) {
 
 function mytweets() {
 //This will show your last 20 tweets and when they were created at in your terminal/bash window.
+  var client = new Twitter(twitterKeys.twitter);
+
+  var params = {
+    screen_name: 'KneverTrap',
+    count: 20
+  };
+
+  client.get('statuses/user_timeline', params, function(error, tweets, response){
+    if(error){
+      console.log("Error: " + error);
+    } else
+    console.log("Most Recent Tweets"); 
+    console.log("------------------------"); 
+    
+    for (var i = 0; i < tweets.length; i++) {
+      console.log(tweets[i].text);
+      console.log("Tweeted On: " + tweets[i].created_at); 
+      console.log("-----------------------");
+    }
+  });
+
 }
 
 function spotifythissong(song_name) {
