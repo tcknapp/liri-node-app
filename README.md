@@ -195,9 +195,6 @@ require("dotenv").config();
 
 * Do not overwrite your file each time you run a command.
 
-### Reminder: Submission on BCS
-
-* Please submit the link to the Github Repository!
 
 
 
