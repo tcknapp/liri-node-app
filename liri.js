@@ -1,6 +1,7 @@
 //put all 'required' at top
 require("dotenv").config();
 
+//Variables-----------------------------
 var request = require("request");
 
 var Twitter = require("twitter");
@@ -15,11 +16,8 @@ var fs = require("fs");
 var command = process.argv[2];
 var name = process.argv[3];
 
-//Add the code required to import the keys.js file and store it in a variable.???
 
-// var spotify = new Spotify(keys.spotify);
-
-
+//Commands ---------------------------------
 /* Make it so liri.js can take in one of the following commands: (use if/else or switch/case with argv)
 * `my-tweets`
 * `spotify-this-song`
@@ -40,12 +38,11 @@ else if(command == 'do-what-it-says') {
   dowhatitsays();
 };
 
+//Movie Fxn-------------------------------------
 function moviethis(movie_name) {
-    /*OMDB API requires an API key. You may use trilogy
     
-    If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-    */
-    // Include the request npm package (Don't forget to run "npm install request" in this folder first!)
+    //If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+    
       if(movie_name === undefined) {
         movie_name = "mr nobody"
       }
@@ -73,7 +70,7 @@ function moviethis(movie_name) {
     
     } //end of movie this function    
 
-
+//Twitter Fxn------------------------------
 function mytweets() {
 //This will show your last 20 tweets and when they were created at in your terminal/bash window.
   var client = new Twitter(twitterKeys.twitter);
@@ -100,6 +97,8 @@ function mytweets() {
 
 } //end of twitter fxn
 
+
+//Spotify Fxn----------------------------
 function spotifythis(song_name) {
 /*This will show the following information about the song in your terminal/bash window
 Artist(s)
@@ -133,7 +132,7 @@ If no song is provided then your program will default to "The Sign" by Ace of Ba
 
 };
 
-
+//Do What It Says Fxn---------------------
 function dowhatitsays() {
 /*Using the fs Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
 It should run spotify-this-song for "I Want it That Way," as follows the text in random.txt.
@@ -170,5 +169,3 @@ Feel free to change the text in that document to test out the feature for other 
     }
     }
   )};
-
-
